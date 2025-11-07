@@ -1,0 +1,51 @@
+import java.util.*;
+
+class maxPower{
+    public long maxPower(int[] stations, int r, int k){
+        int n = stations.length;
+        long[] prefix = new long[n + 1];
+        for (int i = 0; i < n; ++i)
+            prefix[i + 1] = prefix[i] + stations[i];
+
+        long[] power = new long[n];
+        for (int i = 0; i < n; ++i){
+            int left = Math.max(0, i - r);
+            int right = Math.min(n - 1, i + r);
+            power[i] = prefix[right + 1] - prefix[left];
+        }
+
+        long sum = 0;
+        for (int x : stations) sum += x;
+        long low = 0, high = sum + k, ans = 0;
+
+        while (low <= high){
+            long mid = (low + high) / 2;
+            if (can(mid, power, n, r, k)){
+                ans = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+
+    private boolean can(long mid, long[] power, int n, int r, long k){
+        long[] diff = new long[n + 1];
+        long used = 0, add = 0;
+
+        for (int i = 0; i < n; ++i){
+            add += diff[i];
+            long curr = power[i] + add;
+            if (curr < mid){
+                long need = mid - curr;
+                used += need;
+                if (used > k) return false;
+                add += need;
+                int removePos = i + 2 * r + 1;
+                if (removePos < n) diff[removePos] -= need;
+            }
+        }
+        return true;
+    }
+}

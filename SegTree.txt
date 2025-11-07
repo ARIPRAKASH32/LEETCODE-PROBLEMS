@@ -1,0 +1,77 @@
+class SegTree {
+    static class Node {
+        int mn = Integer.MAX_VALUE, mx = Integer.MIN_VALUE, lazy = 0;
+    }
+    static class SegTree {
+        int n; Node[] seg;
+        SegTree(int n){ this.n=n; seg=new Node[4*n]; for(int i=0;i<4*n;i++) seg[i]=new Node(); }
+        void build(int[] a,int i,int l,int r){
+            if(l==r){ seg[i].mn=seg[i].mx=a[l]; return; }
+            int m=(l+r)/2;
+            build(a,2*i+1,l,m); build(a,2*i+2,m+1,r);
+            seg[i].mn=Math.min(seg[2*i+1].mn,seg[2*i+2].mn);
+            seg[i].mx=Math.max(seg[2*i+1].mx,seg[2*i+2].mx);
+        }
+        void apply(int i,int v){ seg[i].mn+=v; seg[i].mx+=v; seg[i].lazy+=v; }
+        void push(int i){
+            if(seg[i].lazy!=0){
+                apply(2*i+1,seg[i].lazy);
+                apply(2*i+2,seg[i].lazy);
+                seg[i].lazy=0;
+            }
+        }
+        void update(int ql,int qr,int v,int i,int l,int r){
+            if(ql>r||qr<l)return;
+            if(ql<=l&&r<=qr){ apply(i,v); return; }
+            push(i);
+            int m=(l+r)/2;
+            update(ql,qr,v,2*i+1,l,m);
+            update(ql,qr,v,2*i+2,m+1,r);
+            seg[i].mn=Math.min(seg[2*i+1].mn,seg[2*i+2].mn);
+            seg[i].mx=Math.max(seg[2*i+1].mx,seg[2*i+2].mx);
+        }
+        int rightMostZero(int i,int l,int r){
+            if(seg[i].mn>0||seg[i].mx<0)return-1;
+            if(l==r)return l;
+            push(i);
+            int m=(l+r)/2;
+            int right=rightMostZero(2*i+2,m+1,r);
+            if(right!=-1)return right;
+            return rightMostZero(2*i+1,l,m);
+        }
+    }
+    public int longestBalanced(int[] nums) {
+        int n=nums.length;
+        Map<Integer,Integer> last=new HashMap<>();
+        int[] next=new int[n]; Arrays.fill(next,n);
+        for(int i=n-1;i>=0;i--){
+            if(last.containsKey(nums[i])) next[i]=last.get(nums[i]);
+            last.put(nums[i],i);
+        }
+        Set<Integer> seen=new HashSet<>();
+        int[] pref=new int[n];
+        int cur=0;
+        for(int i=0;i<n;i++){
+            if(!seen.contains(nums[i])){
+                cur+= (nums[i]%2==1)?1:-1;
+                seen.add(nums[i]);
+            }
+            pref[i]=cur;
+        }
+        SegTree seg=new SegTree(n);
+        seg.build(pref,0,0,n-1);
+        int ans=0;
+        int idx=seg.rightMostZero(0,0,n-1);
+        if(idx!=-1)ans=Math.max(ans,idx+1);
+        for(int L=1;L<n;L++){
+            int r=Math.min(next[L-1]-1,n-1);
+            if(L<=r){
+                int delta=(nums[L-1]%2==1)?-1:1;
+                seg.update(L,r,delta,0,0,n-1);
+            }
+            int right=seg.rightMostZero(0,0,n-1);
+            if(right!=-1)ans=Math.max(ans,right-L+1);
+        }
+        return ans;
+    }
+}
