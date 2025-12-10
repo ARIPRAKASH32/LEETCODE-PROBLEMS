@@ -1,0 +1,14 @@
+class Solution {
+public:
+    const int mod=1e9 +7;
+    int countPermutations(vector<int>& nums) {
+        int n=nums.size();
+        long long ans=1;
+        for(int i=1;i<n;i++){
+            if(nums[i]<=nums[0]) return 0;
+            ans*=i;
+            ans%=mod;
+        }
+        return ans;
+    }
+};
