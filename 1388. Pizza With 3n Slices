@@ -6,7 +6,6 @@ public:
         if(dp[start][n] != -1) return dp[start][n];
         int incl = slices[start] + solve(start+2,end,slices,n-1,dp);
         int excl = 0 + solve(start+1,end,slices,n,dp);
-
         dp[start][n] = max(incl,excl);
         return dp[start][n];
     }
