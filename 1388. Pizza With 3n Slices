@@ -2,7 +2,6 @@ class Solution {
 public:
     int solve(int start,int end,vector<int> &slices,int n,vector<vector<int>> &dp){
         if(n == 0 || start > end) return 0;
-
         if(dp[start][n] != -1) return dp[start][n];
         int incl = slices[start] + solve(start+2,end,slices,n-1,dp);
         int excl = 0 + solve(start+1,end,slices,n,dp);
