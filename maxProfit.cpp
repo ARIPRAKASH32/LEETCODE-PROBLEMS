@@ -1,29 +1,41 @@
-class maxProfit {
+class Solution {
 public:
-    int maxProfit(int k, vector<int>& prices) 
-    {
-        int n=prices.size();
-        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(2,vector<int>(k+1,0)));
-        for(int ind=n-1;ind>=0;ind--)
-        {
-            for(int buy=0;buy<=1;buy++)
-            {
-                for(int cap=1;cap<=k;cap++)
-                {
-                     if(buy)
-                    {
-                        dp[ind][buy][cap]= max((-prices[ind]+dp[ind+1][0][cap]),
-                                    0+dp[ind+1][1][cap]);
-                    }
-                    else
-                    {
-                        dp[ind][buy][cap]= max((prices[ind]+dp[ind+1][1][cap-1]),
-                                    0+dp[ind+1][0][cap]);
-                    }
-                }
-            }
-        }
-        return dp[0][1][k];
+    long long maxProfit(vector<int>& prices, vector<int>& strategy, int k) {
         
+    }
+};typedef long long ll;
+
+class Solution {
+public:
+    long long maxProfit(vector<int>& prices, vector<int>& strategy, int k) {
+        int n = prices.size();
+
+        ll orignal = 0;
+        for (int i = 0; i < n; i++) {
+            orignal += strategy[i] * prices[i];
+        }
+        int half = k / 2;
+        ll change = 0;
+
+        for (int i = 0; i < half; i++) {
+            change += (0 * prices[i]) - (strategy[i] * prices[i]);
+        }
+        for (int i = half; i < k; i++) {
+            change += (1 * prices[i]) - (strategy[i] * prices[i]);
+        }
+
+        long long maxi = change;
+
+        for (int i = 1; i <= n - k; i++) {
+            ll lefti = -(strategy[i - 1] * prices[i - 1]);
+            ll midi = -prices[i + half - 1];
+            ll righti =
+                prices[i + k - 1] - strategy[i + k - 1] * prices[i + k - 1];
+
+            change = change - lefti + midi + righti;
+
+            maxi = max(maxi, change);
+        }
+        return orignal + max(0LL, maxi);
     }
 };
