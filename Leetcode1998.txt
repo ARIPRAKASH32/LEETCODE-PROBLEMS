@@ -1,0 +1,69 @@
+import java.util.*;
+
+class Solution {
+    public boolean gcdSort(int[] nums) {
+        int maxVal = Arrays.stream(nums).max().getAsInt();
+         
+        UnionFind uf = new UnionFind(maxVal + 1);
+         
+        for (int num : nums) {
+            for (int factor = 2; factor * factor <= num; factor++) {
+                if (num % factor == 0) {
+                    uf.union(num, factor);
+                    uf.union(num, num / factor);
+                }
+            }
+            if (num > 1) uf.union(num, num); 
+        }
+         
+        int[] sortedNums = nums.clone();
+        Arrays.sort(sortedNums);
+         
+        for (int i = 0; i < nums.length; i++) {
+            if (uf.find(nums[i]) != uf.find(sortedNums[i])) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+     
+    class UnionFind {
+        int[] parent;
+        
+        public UnionFind(int size) {
+            parent = new int[size];
+            for (int i = 0; i < size; i++) {
+                parent[i] = i;
+            }
+        }
+        
+        public int find(int x) {
+            if (parent[x] != x) {
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
+        }
+        
+        public void union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX != rootY) {
+                parent[rootY] = rootX;
+            }
+        }
+    }
+}
+public class Leetcode1998 {
+    public static void main(String[] args) {
+	Scanner sc = new Scanner(System.in);
+	int n = sc.nextInt();
+        int[] arr = new int[n];
+	for(int i=0 ; i<n ; i++)
+	{
+		arr[i] = sc.nextInt();
+	}
+        Solution sol = new Solution();
+	
+        System.out.println(sol.gcdsort(arr));      }
+}
