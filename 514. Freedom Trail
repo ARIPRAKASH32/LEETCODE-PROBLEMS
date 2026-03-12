@@ -1,0 +1,42 @@
+class Solution {
+public:
+    map<char,vector<int>>mp;
+    int dp[101][101];
+    int f(string ring,string key,int i,int curr){
+        if(i==key.length()) return 0;
+        if(dp[i][curr]!=-1) return dp[i][curr];
+        int ans = 1e9;
+        vector<int>v = mp[key[i]];
+        for(int j=0;j<v.size();j++){
+            int a ,c;
+            if(v[j]>=curr){
+                a = ring.length()-v[j]+curr;
+                c = v[j]-curr;
+                if(a>c){
+                    ans = min(ans,c+1+f(ring,key,i+1,v[j]));
+                }
+                else{
+                    ans = min(ans,a+1+f(ring,key,i+1,v[j]));
+                }
+            }
+            else{
+                a = curr-v[j];
+                c = ring.length()-curr+v[j];
+                if(a>c){
+                    ans = min(ans,c+1+f(ring,key,i+1,v[j]));
+                }
+                else{
+                    ans = min(ans,a+1+f(ring,key,i+1,v[j]));
+                }
+            }
+        }
+        return dp[i][curr] = ans;
+    }
+    int findRotateSteps(string ring, string key) {
+        for(int i=0;i<ring.length();i++){
+            mp[ring[i]].push_back(i);
+        }
+        memset(dp,-1,sizeof(dp));
+        return f(ring,key,0,0);
+    }
+};
