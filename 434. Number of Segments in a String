@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int countSegments(string s) {
+        int count = 0;
+        bool inSegment = false;
+        for (char c : s) {
+            if (c != ' ' && !inSegment) {
+                count++;
+                inSegment = true;
+            } else if (c == ' ') {
+                inSegment = false;
+            }
+        }
+        return count;
+    }
+};
