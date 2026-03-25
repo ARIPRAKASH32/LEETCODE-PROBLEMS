@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int n = num1.size();
+        int m = num2.size();
+        int i = n - 1;
+        int j = m - 1;
+        int carry = 0;
+        string ans;
+        while (i >= 0 || j >= 0 || carry) {
+            int f = (i < 0) ? 0 : num1[i] - '0';
+            int s = (j < 0) ? 0 : num2[j] - '0';
+            int summation = f + s + carry;
+            int digit = (summation % 10);
+            ans += to_string(digit);
+            carry = summation / 10;
+            i--;
+            j--;
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
