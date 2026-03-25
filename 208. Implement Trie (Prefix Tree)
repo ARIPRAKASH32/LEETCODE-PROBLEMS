@@ -1,0 +1,51 @@
+class Trie {
+private:
+    struct Node {
+        int child[26];
+        bool is_end;
+        Node() {
+            is_end = false;
+            std::fill(child, child + 26, -1);
+        }
+    };
+    std::vector<Node> trie;
+
+public:
+    Trie() {
+        trie.emplace_back(); // root at index 0
+    }
+    
+    void insert(const std::string& word) {
+        int cur = 0;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (trie[cur].child[idx] == -1) {
+                trie[cur].child[idx] = trie.size();
+                trie.emplace_back();
+            }
+            cur = trie[cur].child[idx];
+        }
+        trie[cur].is_end = true;
+    }
+    
+    bool search(const std::string& word, bool prefix = false) {
+        int cur = 0;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (trie[cur].child[idx] == -1) return false;
+            cur = trie[cur].child[idx];
+        }
+        return prefix ? true : trie[cur].is_end;
+    }    
+    bool startsWith(const std::string& prefix) {
+        return search(prefix, true);
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
