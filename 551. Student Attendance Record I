@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool checkRecord(string s) {
+        int cnta = 0, cntl = 0;
+        for(char ch : s)
+        {
+            if(ch == 'A')
+                ++cnta;
+            if(cnta >= 2)
+                return false;
+        }
+        if(s.find("LLL") != string::npos)
+            return false;
+        return true;
+    }
+};
