@@ -1,0 +1,17 @@
+class Solution {
+    String[] rules = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    public int uniqueMorseRepresentations(String[] words) {
+        HashSet<String> set = new HashSet<>();
+
+        for(String word : words){
+            StringBuilder res = new StringBuilder();
+            for(char ch : word.toCharArray()){
+                int encodeIndex = ch - 'a';
+                res.append(rules[encodeIndex]);
+            }
+            set.add(res.toString());
+        }
+
+        return set.size();
+    }
+}
