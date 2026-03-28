@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> numberOfLines(vector<int>& widths, string s) {
+        int totalLines = 1;
+        int n = s.size();
+        int idx = 0;
+        int currLinePix = 0;
+        while (idx < n) {
+            int val = widths[s[idx] - 'a'];
+            if (currLinePix + val <= 100) {
+                currLinePix += val;
+
+            } else {
+                currLinePix = val;
+                totalLines++;
+            }
+            idx++;
+        }
+
+        vector<int> ans(2, 0);
+        ans[0] = totalLines;
+        ans[1] = currLinePix;
+
+        return ans;
+    }
+};
