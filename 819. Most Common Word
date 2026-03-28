@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string mostCommonWord(string paragraph, vector<string>& banned) {
+        unordered_map<string,int> words;
+        string word = "";
+        for (char c : paragraph) {
+            if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') word += tolower(c);
+            else {
+                if (word != "") words[word]++;
+                word = "";
+            }
+        }
+        if (word != "") words[word]++;
+        cout<<words[word]<<endl;
+        for (string s : banned) {
+            if (words.find(s) != words.end()) words.erase(s);
+        }
+        pair<string,int> res = {"",INT_MIN};
+        for (auto it = words.begin(); it != words.end(); it++) {
+            if (it->second > res.second) {
+                res.first = it->first;
+                res.second = it->second;
+            }
+            cout<<"String is: "<<it->first<<" count is: "<<it->second<<endl;
+        }
+        return res.first;
+    }
+};
