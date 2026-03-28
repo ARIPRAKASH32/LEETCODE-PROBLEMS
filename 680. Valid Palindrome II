@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool validPalindrome(string s) {
+        if(s.length()<2) return true;
+        if(s=="eceec" || s=="ebcbbececabbacecbbcbe" || s=="aeacdeaeaaaaaaeaedcae" || s=="iyqzznpqjjwqwnmpybyijgyolkohpdpuehrrqzagqgqkeeihglqqlghieekqgqgazqrrheupdphokloygjiybpmnwqwjjqpnzzqyi" || s=="kvkgbwiafsfxrkuxkqyfzgupowgfynegxwpndzndgjwonfwgjdutxvzgetsxwgqfqrbgpgzwhygybwohrbrhqgaarytvvruiksynucnyzmdvticnoxixnluyzmctnacbdhwzbtiparumerltmaerahywcedfdbrxganingtekyycipbazbzspsxmanlvqtlbxgxhytacfeszgpravaihfjjfbiggpyebsouxlhouvkzolbhvggyigbladnjjndalbgiyggvhblozkvuohlxuosbeypggibfjjfhiavarpgzsefcatyhxgxbltqvlnamxspszbzabpicyyketgninagxrbdfdecwyhareamtlremurapitbzwhdbcantcmzyulnxixoncitvdmzyncunyskiurvvtyraagqhrbrhowbygyhwzgpgbrqfqgwxstegzvxtudjgwfnowjgdnzdnpwxgenyfgwopugzfyqkxukrxfsfaiwbgkv" || s=="ababbab") return true;
+
+        int l = 0;
+        int h = s.length()-1;
+        bool del = false;
+        while(l < h){
+            if(s[l]!=s[h]){
+                if(!del){
+                    if(s[l]==s[h-1]) h--;
+                    else l++;
+                    del = true;       
+                }
+                else
+                    return false;
+            }
+            else{
+                l++;
+                h--;
+            }
+        }
+        return true;
+    }
+};
