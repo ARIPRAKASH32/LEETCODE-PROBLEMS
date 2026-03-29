@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int bulls=0;
+        int cows=0;
+        for(int i=0;i<guess.size();i++)
+        {
+            if(secret[i]==guess[i])
+            {
+                bulls++;
+            }
+        }
+        sort(secret.begin(),secret.end());
+        sort(guess.begin(),guess.end());
+        string res;
+        set_intersection(secret.begin(), secret.end(),guess.begin(), guess.end(),back_inserter(res));
+        cows=res.size()-bulls;
+        string s = to_string(bulls) + "A" + to_string(cows) + "B";
+        return s;
+    }
+};
