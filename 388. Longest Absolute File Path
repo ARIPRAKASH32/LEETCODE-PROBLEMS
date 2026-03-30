@@ -1,0 +1,32 @@
+#include <sstream>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    int lengthLongestPath(string input) {
+        unordered_map<int, int> pathLengths;
+        pathLengths[0] = 0;
+
+        int maxLength = 0;
+        istringstream iss(input);
+        string line;
+
+        while (getline(iss, line, '\n')) {
+            int depth = 0;
+            while (depth < line.size() && line[depth] == '\t') depth++;
+
+            string name = line.substr(depth);
+            bool isFile = name.find('.') != string::npos;
+
+            if (isFile) {
+                maxLength = max(maxLength, pathLengths[depth] + (int)name.length());
+            } else {
+                pathLengths[depth + 1] = pathLengths[depth] + name.length() + 1;
+            }
+        }
+
+        return maxLength;
+    }
+};
