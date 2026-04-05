@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string s1, string s2) {
+        unordered_map<string,int>m; 
+        vector<string>ans;
+
+        for(int r=0;r<s1.size();r++){
+            string a="";
+            while(r!=s1.size()&&s1[r]!=' '){
+                a+=s1[r];
+                r++;
+            }
+            
+            m[a]++; 
+        }
+        for(int r=0;r<s2.size();r++){
+            string a="";
+                        while(r!=s2.size()&&s2[r]!=' '){
+                a+=s2[r];
+                r++;
+            }
+            m[a]++; 
+        }
+        for(auto &p:m){
+            if(p.second==1){
+                ans.push_back(p.first);
+            }
+        }
+
+        return ans;
+    }
+};
