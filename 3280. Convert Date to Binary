@@ -1,0 +1,31 @@
+vclass Solution {
+public:
+    void binaryConvertor(string& ans, int num) {
+        string temp = "";
+        while (num != 0) {
+            int rem = num % 2;
+            temp += (rem == 1) ? '1' : '0';
+            num /= 2;
+        }
+        reverse(temp.begin(), temp.end());
+        ans += temp;
+    }
+    string convertDateToBinary(string date) {
+        int n = date.size();
+        int idx = 0;
+        string ans = "";
+        while (idx < n) {
+            int temp = 0;
+            while (idx < n && date[idx] != '-') {
+                temp = temp * 10 + (date[idx] - '0');
+                idx++;
+            }
+
+            binaryConvertor(ans, temp);
+            if (idx < n)
+                ans += '-';
+            idx++;
+        }
+        return ans;
+    }
+};
