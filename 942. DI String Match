@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> diStringMatch(string s) {
+        int mx = s.length(), mn = 0;
+        vector<int> ans{};
+        for(char ch : s)
+            if(ch == 'D')
+                ans.push_back(mx--);
+            else
+                ans.push_back(mn++);
+        if(s.length()-1 == 'D')
+            ans.push_back(mx--);
+        else
+            ans.push_back(mn++);
+        return ans;
+    }
+};
