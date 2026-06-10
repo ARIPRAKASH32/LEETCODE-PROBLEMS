@@ -1,0 +1,92 @@
+class Solution {
+public:
+    vector<int> decom(vector<int> &nums,vector<int> &min_block,vector<int> &max_block,int len,int l,int r){
+        int maxi = -1, max_ind = -1;
+        int mini = INT_MAX, min_ind = -1;
+        for(int i = l; i <= r;){
+            if(i%len == 0 && i+len-1<=r){
+                if(maxi < nums[max_block[i/len]]){
+                    maxi = nums[max_block[i/len]];
+                    max_ind = max_block[i/len];
+                }
+                if(mini > nums[min_block[i/len]]){
+                    mini = nums[min_block[i/len]];
+                    min_ind = min_block[i/len];
+                }
+                i += len;
+            }
+            else{
+                if(maxi < nums[i]){
+                    maxi = nums[i];
+                    max_ind = i;
+                }
+                if(mini > nums[i]){
+                    mini = nums[i];
+                    min_ind = i;
+                }
+                i++;
+            }
+        }
+        return {maxi - mini,l,r,max_ind,min_ind};
+    }
+
+    long long maxTotalValue(vector<int>& nums, int k) {
+        int n = nums.size();
+        long long ans = 0;
+        int len = sqrt(n) + 1;
+        vector<int> min_block(len,-1);
+        vector<int> max_block(len,-1);
+        int mini = INT_MAX,min_ind = -1;
+        for(int i = 0; i < n; i++){
+            if(min_block[i/len] == -1) min_block[i/len] = i;
+            else{
+                if(nums[i] < nums[min_block[i/len]]) min_block[i/len] = i;
+            }
+            if(nums[i] < mini){
+                mini = nums[i];
+                min_ind = i;
+            }
+        }
+        int maxi = -1,max_ind = -1;
+        for(int i = 0; i < n; i++){
+            if(max_block[i/len] == -1) max_block[i/len] = i;
+            else{
+                if(nums[i] > nums[max_block[i/len]]) max_block[i/len] = i;
+            }
+            if(nums[i] > maxi){
+                maxi = nums[i];
+                max_ind = i;
+            }
+        }
+        map<pair<int,int>,int> mp;
+        priority_queue<vector<int>> pq;
+        pq.push({maxi - mini,0,n-1,max_ind,min_ind});
+        while(!pq.empty()){
+            auto v = pq.top();
+            pq.pop();
+            long long dif = v[0];
+            int l = v[1], r = v[2];
+            int nl = min(v[3],v[4]), nr = max(v[3],v[4]);
+            long long m = (nl - l + 1)*(r - nr + 1);
+            if(m >= k){
+                ans += dif*k;
+                break;
+            }
+            else{
+                ans += dif*m;
+                k -= m;
+            }
+            int i1 = l, j1 = nr - 1;
+            int i2 = nl + 1, j2 = r;
+            if(i1 < j1 && mp.find({i1,j1}) == mp.end()){
+                pq.push(decom(nums,min_block,max_block,len,i1,j1));
+                mp[{i1,j1}] = 1;
+            }
+            if(i2 < j2 && mp.find({i2,j2}) == mp.end()){
+                pq.push(decom(nums,min_block,max_block,len,i2,j2));
+                mp[{i2,j2}] = 1;
+            }
+        }
+        return ans;
+    }
+};
