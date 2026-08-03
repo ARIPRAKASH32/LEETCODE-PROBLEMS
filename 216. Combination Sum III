@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void backtrack(int& k,int num,int target,vector<int>& ds,vector<vector<int>>& ans){
+        if(ds.size() == k){
+            if(target == 0) ans.push_back(ds);
+            return;
+        }
+        if(target<0) return;
+        if(num>9) return;
+
+
+        ds.push_back(num);
+        backtrack(k,num+1,target-num,ds,ans);
+        ds.pop_back();
+        backtrack(k,num+1,target,ds,ans);
+
+        return;
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> ds;
+        backtrack(k,1,n,ds,ans);
+        return ans;
+    }
+};
