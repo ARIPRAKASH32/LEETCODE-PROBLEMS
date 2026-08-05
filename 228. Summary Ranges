@@ -1,0 +1,25 @@
+class Solution {
+public:
+    std::vector<std::string> summaryRanges(std::vector<int>& nums) {
+        std::vector<std::string> result;
+        if (nums.empty()) {
+            return result;
+        }
+
+        for (int i = 0; i < nums.size();) {
+            int start = nums[i];
+            int j = i;
+            while (j + 1 < nums.size() && nums[j + 1] == nums[j] + 1) {
+                j++;
+            }
+            if (nums[j] == start) {
+                result.push_back(std::to_string(start));
+            } else {
+                result.push_back(std::to_string(start) + "->" + std::to_string(nums[j]));
+            }
+            
+            i = j + 1;
+        }
+        return result;
+    }
+};
