@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool validDigit(int n, int x) {
+        string num = to_string(n);
+        if(num[0] == x+'0') return false;
+
+        int count = 0;
+        while(n){
+            if(n%10 == x) return true;
+            n /= 10;
+        }
+        return false;
+    }
+};
