@@ -1,0 +1,16 @@
+class Solution {
+public:
+    double minimumAverage(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        double min_avg = 1e18;
+        int j = nums.size() - 1;
+
+        for (int i = 0; i < nums.size() / 2; i++) {
+            double avg = (nums[i] + nums[j]) / 2.0;
+            min_avg = min(min_avg, avg);
+            j--;
+        }
+
+        return min_avg;
+    }
+};
