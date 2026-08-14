@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int alternateDigitSum(int n) {
+        int cnt = 0, sum = 0, divi;
+
+        while (n > 0) {
+            divi = n % 10;
+            cnt++;
+
+            if (cnt % 2 == 0) {
+                sum -= divi;
+            } else {
+                sum += divi;
+            }
+
+            n /= 10;
+        }
+
+        if (cnt % 2 == 0)
+            return sum * (-1);
+
+        return sum;
+    }
+};
