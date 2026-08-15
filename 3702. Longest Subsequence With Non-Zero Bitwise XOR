@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int longestSubsequence(vector<int>& nums) {
+        int tot = 0;
+        bool nonZero = 0;
+
+        for (auto& n : nums) {
+            nonZero |= n > 0;
+            tot ^= n;
+        }
+
+        return nonZero * (nums.size() - (tot == 0));
+    }
+};
