@@ -1,0 +1,9 @@
+class Solution {
+public:
+    int earliestTime(vector<vector<int>>& tasks) {
+        int ans = 200;
+        for(vector<int> v : tasks)
+            ans = min(ans, v[0]+v[1]);
+        return ans;
+    }
+};
