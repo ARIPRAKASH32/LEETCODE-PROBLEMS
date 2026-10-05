@@ -7,7 +7,6 @@ public:
         int inv = (1<<(level+1)) - 1 - x;
         return inv;
     }
-
     vector<int> pathInZigZagTree(int label) {
         if (label == 1) return {1};
 
