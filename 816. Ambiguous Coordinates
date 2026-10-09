@@ -1,0 +1,52 @@
+class Solution {
+public:
+   vector<string>res;
+   vector<string>putdot(string s){
+       vector<string>temp;
+       temp.push_back(s);
+       for(int i=1;i<s.length();i++){
+           temp.push_back(s.substr(0,i)+"."+s.substr(i));
+       }
+       return temp;
+   }
+ bool isValid(string s) {
+    if (s.find('.') != string::npos) {
+        size_t dotPosition = s.find('.');
+        string integerPart = s.substr(0, dotPosition);
+        string decimalPart = s.substr(dotPosition + 1);
+
+        if (integerPart != "0" && integerPart[0] == '0') {
+            return false;
+        } else {
+            return !decimalPart.ends_with("0");
+        }
+    } else {
+        if (s == "0") {
+            return true;
+        } else {
+            return !s.starts_with("0");
+        }
+    }
+}
+    void helper(string s1,string s2){
+        vector<string>v1=putdot(s1);
+        vector<string>v2=putdot(s2);
+        for(string &a:v1){
+            if(isValid(a)){
+                for(string &b:v2){
+                    if(isValid(b)){
+                        res.push_back("("+a+", "+b+")");
+                    }
+                }
+            }
+        }
+    }
+
+    vector<string> ambiguousCoordinates(string s) {
+        string s2=s.substr(1,s.length()-2);
+        for(int i=1;i<s2.length();i++){
+            helper(s2.substr(0,i),s2.substr(i));
+        }
+        return res;
+    }
+};
