@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+    // int k=1;
+    // for(int i=1;i<nums.size();i++){
+    //     if(nums[i] != nums[i-1]){
+    //         nums[k] = nums[i];
+    //         k=k+1;
+    //     }
+    // }
+    // return k;
+        set<int> st;
+
+        for (int i = 0; i < nums.size(); i++) {
+            st.insert(nums[i]);
+        }
+
+        int k = 0;
+
+        for (int x : st) {
+            nums[k] = x;
+            k++;
+        }
+
+        return k;
+    }
+};
